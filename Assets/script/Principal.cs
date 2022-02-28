@@ -21,6 +21,8 @@ public class Principal : MonoBehaviour
         JogadorBate.SetActive(false);
 
         GameObject barril = CriaNovoBarril(new Vector2(0,-2.1f));
+
+        CriaBarrisInicio();
     }
 
     // Update is called once per frame
@@ -73,5 +75,12 @@ public class Principal : MonoBehaviour
         novoBarril.transform.position = posicao;
 
         return novoBarril;
+    }
+
+    void CriaBarrisInicio(){
+        for (int i = 0; i <=7; i++)
+        {
+            GameObject barril = CriaNovoBarril(new Vector2(0, -2.1f+(i*0.99f)));
+        }
     }
 }
