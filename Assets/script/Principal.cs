@@ -35,15 +35,16 @@ public class Principal : MonoBehaviour
     void bateDireita(){
         JogadorBate.SetActive(true);
         JogadorParado.SetActive(false);
-        jogador.transform.position = new Vector2(1.1f, jogador.transform.position.y);
+        jogador.transform.position = new Vector2(-0.3f, jogador.transform.position.y);
         jogador.transform.localScale = new Vector2(escalaJogadorHorizontal,jogador.transform.localScale.y);
-        
+        Invoke("VoltaAnimacao", 0.25f);
     }
     void bateEsquerda(){
         JogadorBate.SetActive(true);
         JogadorParado.SetActive(false);
-        jogador.transform.position = new Vector2(-1.1f, jogador.transform.position.y);
+        jogador.transform.position = new Vector2(0.3f, jogador.transform.position.y);
         jogador.transform.localScale = new Vector2(-escalaJogadorHorizontal,jogador.transform.localScale.y);
+        Invoke("VoltaAnimacao", 0.25f);
     }
 
     void VoltaAnimacao(){
