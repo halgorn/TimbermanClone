@@ -15,7 +15,7 @@ public class Principal : MonoBehaviour
     public GameObject inimigoDireita;
     float escalaJogadorHorizontal;
     // Start is called before the first frame update
-
+    bool ladoPersonagem;
     private List<GameObject> listaBlocos;
     void Start()
     {
@@ -41,23 +41,29 @@ public class Principal : MonoBehaviour
             }else {
                 bateEsquerda();
             }
-
+            listaBlocos.RemoveAt(0);
+            ReposicionaBlocos();
+            ConfereJogada();
         }
     }
 
-    void bateDireita(){
+    void bateEsquerda(){
+        ladoPersonagem = true;
         JogadorBate.SetActive(true);
         JogadorParado.SetActive(false);
         jogador.transform.position = new Vector2(-0.3f, jogador.transform.position.y);
         jogador.transform.localScale = new Vector2(escalaJogadorHorizontal,jogador.transform.localScale.y);
         Invoke("VoltaAnimacao", 0.25f);
+        listaBlocos[0].SendMessage("BateDireita");
     }
-    void bateEsquerda(){
+    void bateDireita(){
+        ladoPersonagem = false;
         JogadorBate.SetActive(true);
         JogadorParado.SetActive(false);
         jogador.transform.position = new Vector2(0.3f, jogador.transform.position.y);
         jogador.transform.localScale = new Vector2(-escalaJogadorHorizontal,jogador.transform.localScale.y);
         Invoke("VoltaAnimacao", 0.25f);
+        listaBlocos[0].SendMessage("BateEsquerda");
     }
 
     void VoltaAnimacao(){
@@ -88,6 +94,28 @@ public class Principal : MonoBehaviour
         {
             GameObject NovoBarril = CriaNovoBarril(new Vector2(0, -2.1f+(i*0.99f)));
             listaBlocos.Add(NovoBarril);
+        }
+    }
+
+    void ReposicionaBlocos(){
+
+        GameObject objBarril = CriaNovoBarril(new Vector2(0, -2.1f+(8*0.99f)));
+        listaBlocos.Add(objBarril);
+        for (int i = 0; i <=7; i++)
+        {
+            listaBlocos[i].transform.position = new Vector2(listaBlocos[i].transform.position.x, listaBlocos[i].transform.position.y-0.99f);
+            
+        }
+    }
+    void ConfereJogada(){
+        if(listaBlocos[0].gameObject.CompareTag("Inimigo")){
+
+            if((listaBlocos[0].name == "inimigoEsq(Clone)" &&  !ladoPersonagem)||(listaBlocos[0].name == "inimigoDir(Clone)" &&  ladoPersonagem)){
+                print("Errou");
+            }else{
+                print("acertou");
+            }
+
         }
     }
 }
