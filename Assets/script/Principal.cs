@@ -9,6 +9,9 @@ public class Principal : MonoBehaviour
     public GameObject JogadorParado;
     public GameObject JogadorBate;
 
+    public GameObject barril;
+    public GameObject inimigoEsquerda;
+    public GameObject inimigoDireita;
     float escalaJogadorHorizontal;
     // Start is called before the first frame update
     void Start()
@@ -16,6 +19,8 @@ public class Principal : MonoBehaviour
         escalaJogadorHorizontal = transform.localScale.x;
 
         JogadorBate.SetActive(false);
+
+        GameObject barril = CriaNovoBarril(new Vector2(0,-2.1f));
     }
 
     // Update is called once per frame
@@ -50,5 +55,23 @@ public class Principal : MonoBehaviour
     void VoltaAnimacao(){
         JogadorBate.SetActive(false);
         JogadorParado.SetActive(true);
+    }
+
+    GameObject CriaNovoBarril(Vector2 posicao){
+        GameObject novoBarril;
+
+        if(Random.value >0.5f){
+            novoBarril = Instantiate(barril);
+        }else{
+
+            if(Random.value  > 0.5f){
+                novoBarril = Instantiate(inimigoEsquerda);
+            }else{
+                novoBarril = Instantiate(inimigoDireita);
+            } 
+        }
+        novoBarril.transform.position = posicao;
+
+        return novoBarril;
     }
 }
