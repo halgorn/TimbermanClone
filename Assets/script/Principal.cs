@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Principal : MonoBehaviour
 {
@@ -14,8 +15,11 @@ public class Principal : MonoBehaviour
     public GameObject inimigoDireita;
     float escalaJogadorHorizontal;
     // Start is called before the first frame update
+
+    private List<GameObject> listaBlocos;
     void Start()
     {
+        listaBlocos = new List<GameObject>();
         escalaJogadorHorizontal = transform.localScale.x;
 
         JogadorBate.SetActive(false);
@@ -23,6 +27,8 @@ public class Principal : MonoBehaviour
         GameObject barril = CriaNovoBarril(new Vector2(0,-2.1f));
 
         CriaBarrisInicio();
+
+        
     }
 
     // Update is called once per frame
@@ -62,7 +68,7 @@ public class Principal : MonoBehaviour
     GameObject CriaNovoBarril(Vector2 posicao){
         GameObject novoBarril;
 
-        if(Random.value >0.5f){
+        if(Random.value >0.5f || (listaBlocos.Count < 2)){
             novoBarril = Instantiate(barril);
         }else{
 
@@ -80,7 +86,8 @@ public class Principal : MonoBehaviour
     void CriaBarrisInicio(){
         for (int i = 0; i <=7; i++)
         {
-            GameObject barril = CriaNovoBarril(new Vector2(0, -2.1f+(i*0.99f)));
+            GameObject NovoBarril = CriaNovoBarril(new Vector2(0, -2.1f+(i*0.99f)));
+            listaBlocos.Add(NovoBarril);
         }
     }
 }
