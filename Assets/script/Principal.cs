@@ -28,6 +28,8 @@ public class Principal : MonoBehaviour
 
     public GameObject barra;
 
+    public AudioClip somBate;
+    public AudioClip somPerde;
     void Start()
     {
         listaBlocos = new List<GameObject>();
@@ -57,7 +59,7 @@ public class Principal : MonoBehaviour
                     comecou = true;
                     barra.SendMessage("Comecou");
                 }
-
+                GetComponent<AudioSource>().PlayOneShot(somBate);
                 if(Input.mousePosition.x > Screen.width/2){
                     bateDireita();
                 }else {
@@ -134,8 +136,9 @@ public class Principal : MonoBehaviour
     void ConfereJogada(){
         if(listaBlocos[0].gameObject.CompareTag("Inimigo")){
 
-            if((listaBlocos[0].name == "inimigoEsq(Clone)" &&  !ladoPersonagem)||(listaBlocos[0].name == "inimigoDir(Clone)" &&  ladoPersonagem)){
+            if((listaBlocos[0].name == "inimigoDir(Clone)" &&  !ladoPersonagem)||(listaBlocos[0].name == "inimigoEsq(Clone)" &&  ladoPersonagem)){
                 FimDeJogo();
+                GetComponent<AudioSource>().PlayOneShot(somPerde);
             }else{
                 MarcaPonto();
             }
