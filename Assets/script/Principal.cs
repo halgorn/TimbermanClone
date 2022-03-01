@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Collections.Generic;
-
+using UnityEngine.UI;
+using TMPro;
 public class Principal : MonoBehaviour
 {
     
@@ -18,9 +19,13 @@ public class Principal : MonoBehaviour
     bool ladoPersonagem;
     private List<GameObject> listaBlocos;
 
-    public TextMeshProGUI pontuacao;
+    public Text pontuacao;
 
     int score;
+
+    bool comecou;
+    bool acabou;
+
     void Start()
     {
         listaBlocos = new List<GameObject>();
@@ -32,23 +37,31 @@ public class Principal : MonoBehaviour
 
         CriaBarrisInicio();
 
-        
+        pontuacao.transform.position =  new Vector2(Screen.width/2, Screen.height/2 + 50);
+        pontuacao.text = "Toque Para Iniciar!";
+        pontuacao.fontSize = 25;
+
+        comecou = false;
+        acabou = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButtonDown("Fire1")){
+        if(!acabou){
+            if(Input.GetButtonDown("Fire1")){
 
-            if(Input.mousePosition.x > Screen.width/2){
-                bateDireita();
-            }else {
-                bateEsquerda();
+                if(Input.mousePosition.x > Screen.width/2){
+                    bateDireita();
+                }else {
+                    bateEsquerda();
+                }
+                listaBlocos.RemoveAt(0);
+                ReposicionaBlocos();
+                ConfereJogada();
             }
-            listaBlocos.RemoveAt(0);
-            ReposicionaBlocos();
-            ConfereJogada();
         }
+        
     }
 
     void bateEsquerda(){
@@ -115,11 +128,43 @@ public class Principal : MonoBehaviour
         if(listaBlocos[0].gameObject.CompareTag("Inimigo")){
 
             if((listaBlocos[0].name == "inimigoEsq(Clone)" &&  !ladoPersonagem)||(listaBlocos[0].name == "inimigoDir(Clone)" &&  ladoPersonagem)){
-                print("Errou");
+                FimDeJogo();
             }else{
-                print("acertou");
+                MarcaPonto();
             }
 
+        }else{
+            MarcaPonto();
         }
+    }
+
+    void MarcaPonto(){
+        score++;
+        pontuacao.text = score.ToString();
+        pontuacao.fontSize = 100;
+        pontuacao.color = new Color(0.95f,1.0f,0.35f);
+    }
+
+    void FimDeJogo(){
+
+        acabou = true;
+        JogadorBate.GetComponent<SpriteRenderer>().color = new Color(1.0f,0.35f,0.35f);
+        JogadorParado.GetComponent<SpriteRenderer>().color = new Color(1.0f,0.35f,0.35f);
+
+        jogador.GetComponent<Rigidbody2D>().isKinematic = false;
+        
+
+        if(ladoPersonagem){
+            jogador.GetComponent<Rigidbody2D>().AddTorque(-100.0f);
+            jogador.GetComponent<Rigidbody2D>().velocity = new Vector2(-5.0f, 3.0f);
+        }else{
+            jogador.GetComponent<Rigidbody2D>().AddTorque(100.0f);
+            jogador.GetComponent<Rigidbody2D>().velocity = new Vector2(5.0f, 3.0f);
+        }
+        Invoke("RecarregaCena", 2);
+    }
+
+    void RecarregaCena(){
+        Application.LoadLevel("Game");
     }
 }
