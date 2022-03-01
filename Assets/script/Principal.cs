@@ -26,6 +26,8 @@ public class Principal : MonoBehaviour
     bool comecou;
     bool acabou;
 
+    public GameObject barra;
+
     void Start()
     {
         listaBlocos = new List<GameObject>();
@@ -50,6 +52,11 @@ public class Principal : MonoBehaviour
     {
         if(!acabou){
             if(Input.GetButtonDown("Fire1")){
+
+                if(!comecou){
+                    comecou = true;
+                    barra.SendMessage("Comecou");
+                }
 
                 if(Input.mousePosition.x > Screen.width/2){
                     bateDireita();
@@ -143,6 +150,7 @@ public class Principal : MonoBehaviour
         pontuacao.text = score.ToString();
         pontuacao.fontSize = 100;
         pontuacao.color = new Color(0.95f,1.0f,0.35f);
+        barra.SendMessage("AumentaBarra");
     }
 
     void FimDeJogo(){
@@ -155,11 +163,11 @@ public class Principal : MonoBehaviour
         
 
         if(ladoPersonagem){
-            jogador.GetComponent<Rigidbody2D>().AddTorque(-100.0f);
-            jogador.GetComponent<Rigidbody2D>().velocity = new Vector2(-5.0f, 3.0f);
-        }else{
             jogador.GetComponent<Rigidbody2D>().AddTorque(100.0f);
             jogador.GetComponent<Rigidbody2D>().velocity = new Vector2(5.0f, 3.0f);
+        }else{
+            jogador.GetComponent<Rigidbody2D>().AddTorque(-100.0f);
+            jogador.GetComponent<Rigidbody2D>().velocity = new Vector2(-5.0f, 3.0f);
         }
         Invoke("RecarregaCena", 2);
     }
