@@ -17,6 +17,10 @@ public class Principal : MonoBehaviour
     // Start is called before the first frame update
     bool ladoPersonagem;
     private List<GameObject> listaBlocos;
+
+    public TextMeshProGUI pontuacao;
+
+    int score;
     void Start()
     {
         listaBlocos = new List<GameObject>();
